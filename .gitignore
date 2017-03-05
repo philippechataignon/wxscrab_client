@@ -1,0 +1,14 @@
+/wxscrab/gen/compdic
+/wxscrab/gen/listdic
+/wxscrab/gen/gen_part
+/wxscrab/win/dist
+Makefile.dep
+*.o
+*.partie
+*.pyc
+*.pyo
+*.pyw
+.sconsign.dblite
+settings.xml
+setup*.exe
+*.so
