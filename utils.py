@@ -10,11 +10,11 @@ def convert_time(t) :
         return "%02d:%02d" % (t // 60, t % 60)
 
 def errordlg(msg, titre) :
-    import wx 
+    import wx
     dlg = wx.MessageDialog(None,msg,titre,wx.OK | wx.ICON_ERROR)
     dlg.ShowModal()
-    dlg.Destroy() 
+    dlg.Destroy()
 
 if __name__ == '__main__' :
     for i in range(180) :
-        print convert_time(i)
+        print(convert_time(i))

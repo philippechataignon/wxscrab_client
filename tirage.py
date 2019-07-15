@@ -15,7 +15,7 @@ class tirage(wx.Panel) :
         fill = self.app.settings["size_fill"]
         sizer = wx.GridSizer(rows = 1, cols = nbpos, hgap=fill, vgap=fill)
         self.cases=[]
-        for pos in xrange(nbpos)  :
+        for pos in range(nbpos)  :
             case = case_tirage.case_tirage(self, pos)
             self.cases.append(case)
             sizer.Add(case, flag=wx.ALIGN_CENTER)
@@ -24,7 +24,7 @@ class tirage(wx.Panel) :
 
 ## Fonctions basiques
     def nb_pos(self) :
-        """ Renvoie nombre de cases du tirage 
+        """ Renvoie nombre de cases du tirage
         """
         return len(self.cases)
 
@@ -62,7 +62,7 @@ class tirage(wx.Panel) :
                 c_dep = c
         return c_dep
 
-## Principales fonctions publiques 
+## Principales fonctions publiques
     def move_from(self, c_dest, status, lettre) :
         """ Déplace un jeton du tirage vers la case c_dest
 
@@ -88,7 +88,7 @@ class tirage(wx.Panel) :
             return False
 
     def move_to(self, c_dep) :
-        """ Remet le jeton j de la case c_dep 
+        """ Remet le jeton j de la case c_dep
         dans la première case libre trouvée
         """
         # la case de départ est vide, on sort
@@ -142,24 +142,24 @@ class tirage(wx.Panel) :
         """
         end = -1
         # cherche index première case vide à droite
-        for i in xrange(pos+1, self.nb_pos()) :
+        for i in range(pos+1, self.nb_pos()) :
             if self.cases[i].is_vide() :
                 end = i
                 break
         # il y a une case vide : on décale en posant et vidant à chaque pas
         if end >= 0 :
-            for i in xrange(end, pos, -1) :
+            for i in range(end, pos, -1) :
                 j = self.cases[i-1].prend()
                 self.cases[i].pose(j)
         else :
             # symétrique du traitement précédent
             # mais sur la gauche
             end2 = -1
-            for i in xrange(0, pos) :
+            for i in range(0, pos) :
                 if self.cases[i].is_vide() :
                     end2 = i
                     break
             if end2 >= 0 :
-                for i in xrange(end2, pos) :
+                for i in range(end2, pos) :
                     j = self.cases[i+1].prend()
                     self.cases[i].pose(j)

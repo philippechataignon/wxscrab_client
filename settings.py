@@ -18,12 +18,12 @@ class settings :
         with open("def.yaml") as f :
             buff = f.read()
         self.dic = yaml.load(buff)
-        self.def_keys = [key for key in self.dic.iterkeys() if not key.startswith(('col_','fontcol_'))]
+        self.def_keys = [key for key in self.dic.keys() if not key.startswith(('col_','fontcol_'))]
         if os.path.isfile(self.file) :
             with open(self.file) as f :
                 buff = f.read()
         dic_perso = yaml.load(buff)
-        for key, item in dic_perso.iteritems() :
+        for key, item in dic_perso.items() :
             self.dic[key] = item
         # assure que la taille de la case est paire
         self.dic['size_case'] = (self.dic['size_case'] // 2) * 2
@@ -34,10 +34,10 @@ class settings :
         else :
             return None
 
-    def __setitem__(self, key, item): 
+    def __setitem__(self, key, item):
         self.dic[key] = item
 
-    def __delitem__(self, key): 
+    def __delitem__(self, key):
         del self.dic[key]
 
     def write(self) :
@@ -55,7 +55,7 @@ class settings :
 if __name__ == '__main__' :
     s = settings()
     sys.stdout.write(yaml.dump(s.dic, default_flow_style=False))
-    print s.dic
-    print s['size_jeton']
-    print s['pipo']
-    print s.def_keys
+    print( s.dic)
+    print( s['size_jeton'])
+    print( s['pipo'])
+    print( s.def_keys)

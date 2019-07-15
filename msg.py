@@ -50,8 +50,8 @@ class msg :
 if __name__ == '__main__' :
     m = msg("cha", [0, 2], "philippe")
     d = m.dump()
-    print m, d
+    print(m, d)
     n = msg(dump=d)
-    print n, d
+    print(n, d)
     m = msg("chat")
-    print m, m.dump()
+    print(m, m.dump())

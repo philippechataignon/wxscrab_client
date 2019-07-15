@@ -39,13 +39,13 @@ class grille(wx.Panel) :
         wx.Panel.__init__(self, parent, -1)
         self.app = app
         self.coord_ini = coord.coord()   # coord_ini est récupéré depuis case (OnClickCase)
-        self.coord_cur = coord.coord()   # coordonnée courante 
+        self.coord_cur = coord.coord()   # coordonnée courante
         self.entry = False          # flag saisie en cours
         fill = self.app.settings["size_fill"]
         sizer = wx.GridBagSizer(hgap=0, vgap=0)
         sizer.Add( (2*fill,2*fill), pos=(0,0))
         sizer.Add( (fill,fill), pos=(16,16))
-        for i in xrange(15) :
+        for i in range(15) :
             t = str(i+1)
             sizer.Add(wx.StaticText(self, -1, t), pos=(0,i+1), flag=wx.ALIGN_CENTER)
             t = chr(65+i)
@@ -61,7 +61,7 @@ class grille(wx.Panel) :
     def __iter__(self) :
         """ L'itérateur de la grille parcourt l'ensemble des cases
         """
-        return self.cases.itervalues()
+        return self.cases.values()
 
 ## Fonctions basiques
 
@@ -77,7 +77,7 @@ class grille(wx.Panel) :
         if coord.isOK():
             return self.cases[(coord.x(),coord.y())].is_vide()
         else:
-            return False 
+            return False
 
     def case_coord_occ(self, coord) :
         "Renvoit True si case OK et occupee"
@@ -99,13 +99,13 @@ class grille(wx.Panel) :
     def get_mot_temp(self) :
         """
         Convertit la position de début de saisie en coord debut et mot
-        
+
         Appelé uniquement depuis envoi_mot
 
         Remonte les lettres situées à gauche pour le début ; idem à droite
         Renvoit None en cas de saisie incorrecte : mot vide ou début partie
         """
-        mot = [] 
+        mot = []
         if not self.coord_ini.isOK() :
             return (None, None)
         else :
@@ -137,7 +137,7 @@ class grille(wx.Panel) :
         self.coord_ini = coord.coord()
 
     def pose_mot(self, coo_str, mot, status) :
-        """ Pose un mot sur la grille 
+        """ Pose un mot sur la grille
         La coordonnée est en texte
         Appelé pour le mot du Top pour permettre de le repérer (status = PREPOSE)
         Appelé depuis la box des propositions (status = TEMP)
@@ -147,7 +147,7 @@ class grille(wx.Panel) :
         for l in mot :
             t.move_from(self.case_coord(coo), status, l)
             coo = coo.next()
-        
+
 # Traitement evt clavier, appelé depuis app.OnKey
     def traite_keycode(self, l) :
         """ Traite le cas où une lettre est demandée dans le cas
@@ -156,7 +156,7 @@ class grille(wx.Panel) :
         Prend le jeton dans le tirage, le pose et fait avancer la flèche
         """
         if not self.entry :          # si pas de saisie en cours
-            self.coord_cur = self.coord_ini # coord_cur=coord_ini=coord de la case cliquée 
+            self.coord_cur = self.coord_ini # coord_cur=coord_ini=coord de la case cliquée
                                             # sinon, la coord courante existe
         if not self.coord_cur.isOK() :      # si coord incorrecte, on sort
             return
@@ -169,10 +169,10 @@ class grille(wx.Panel) :
             c.efface_fleche()   # efface la fleche
             self.entry = True   # passe le flag saisie en cours à True
             # avance coord_cur en sautant les cases occupées
-            while self.case_coord_occ(self.coord_cur) : 
+            while self.case_coord_occ(self.coord_cur) :
                 self.coord_cur = self.coord_cur.next()
             # met la fleche si possible
-            if self.coord_cur.isOK() :      
+            if self.coord_cur.isOK() :
                 c = self.case_coord(self.coord_cur)
                 c.set_fleche(self.coord_ini.dir())
 

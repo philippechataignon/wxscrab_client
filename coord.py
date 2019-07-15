@@ -13,7 +13,7 @@ class coord :
         c.fromstr("O16")
 
     La coordonnée peut être en erreur (cas d'une coordonnée vide ou sur les bords)
-    
+
     Utilisé dans : grille, case, partie
     """
 
@@ -38,7 +38,7 @@ class coord :
                 return "%d%c" % (self._x+1, 65+self._y)
         else :
             return "EE0"
-        
+
     def __eq__(self, other) :
         if self._x==other._x and self._y==other._y :
             return True
@@ -67,7 +67,7 @@ class coord :
         return (self._dir == HOR and self._x == 14) or (self._dir == VER and self._y == 14)
 
     def is_centre(self) :
-        return self._x == 7 and self._y == 7 
+        return self._x == 7 and self._y == 7
 
     def change_dir(self) :
         if self._dir == HOR :
@@ -148,7 +148,7 @@ class coord :
 if __name__ == '__main__' :
     e = coord(1,1)
     c = coord(coo_str=" h    8")
-    print e,c
+    print(e,c)
     #e.fromstr("8H")
     #print e
     #print c==e

@@ -8,14 +8,14 @@ class reliquat :
         self.__freq = dict(zip(char,repart))
         self.__jetons = []
         for lettre in char :
-            for i in xrange(self.__freq[lettre]) :
+            for i in range(self.__freq[lettre]) :
                 self.__jetons.append(jeton.jeton(lettre, jeton.RELIQUAT))
 
     def __str__(self) :
         return " ".join([l*self.__freq[l] for l in char if self.__freq[l] != 0 ])
 
     def move_from(self, c_dest, status, lettre) :
-        """ Prend un jeton dans le reliquat pour le poser sur la case c_dest 
+        """ Prend un jeton dans le reliquat pour le poser sur la case c_dest
             avec un status donné et portant la lettre demandée
         """
         cherche = "?" if 'a' <= lettre <= 'z' else lettre
@@ -44,4 +44,4 @@ class reliquat :
 
 if __name__ == '__main__' :
     r = reliquat()
-    print r
+    print(r)

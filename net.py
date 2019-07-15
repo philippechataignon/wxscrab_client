@@ -17,14 +17,14 @@ class ScrabbleProtocol(basic.NetstringReceiver):
 
     def stringReceived(self, mm):
         if self.app.settings['debug_net'] :
-            print "<- %s" % mm
+            print( "<- %s" % mm)
         m = msg.msg.load(mm)
         d = self.app.traite(m.cmd)
         reactor.callLater(0, d.callback, m)
 
     def envoi(self, mm):
         if self.app.settings['debug_net'] :
-            print "-> %s" % mm
+            print( "-> %s" % mm)
         self.sendString(mm.dump())
 
 class ScrabbleFactory(ClientFactory) :
@@ -48,4 +48,4 @@ class ScrabbleFactory(ClientFactory) :
         if self.proto is not None :
             self.proto.envoi(mm)
         elif self.app.settings['debug_net'] :
-            print "X Non ENVOI X : %s" % mm
+            print( "X Non ENVOI X : %s" % mm)

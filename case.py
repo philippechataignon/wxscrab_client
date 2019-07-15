@@ -18,7 +18,7 @@ class case(wx.Window) :
         wx.Window.__init__(self, parent, size=(self.size, self.size))
         self._jeton = None
         self._fleche = None
-        self._buffer = wx.EmptyBitmap(self.size, self.size)
+        self._buffer = wx.Bitmap(self.size, self.size)
         self.font_jeton = wx.Font(self.settings['size_font_jeton'],
                 wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         self.font_point = wx.Font(self.settings['size_font_point'],
@@ -35,7 +35,7 @@ class case(wx.Window) :
         dc.SetBrush(wx.Brush(self.col_fond))
         # trace le carré de fond
         dc.SetPen(wx.Pen(s['col_neutre'], 1, wx.SOLID))
-        dc.DrawRectangle(0, 0, self.size, self.size) 
+        dc.DrawRectangle(0, 0, self.size, self.size)
         # puis le jeton éventuel
         if not self.is_vide() :
             dc = wx.PaintDC(self)
@@ -74,7 +74,7 @@ class case(wx.Window) :
                 pts_reel = [(x*self.size/10, y*self.size/10) for (x,y) in pts]
             elif self._fleche == coord.VER :
                 pts_reel = [(y*self.size/10, x*self.size/10) for (x,y) in pts]
-            dc.DrawPolygon(pts_reel) 
+            dc.DrawPolygon(pts_reel)
 
     def is_vide(self) :
         """ Renvoit True si la case est vide (pas de jeton)
@@ -114,13 +114,13 @@ class case(wx.Window) :
         self.Refresh()
         return j
 
-class casedroptarget(wx.PyDropTarget) :
+class casedroptarget(wx.DropTarget) :
     def __init__(self, case) :
-        wx.PyDropTarget.__init__(self)
+        wx.DropTarget.__init__(self)
         self.case = case
         self.app = case.app
         self.data = wx.TextDataObject()
-        self.SetDataObject(self.data) 
+        self.SetDataObject(self.data)
 
     def OnData(self, x, y, d) :
         if self.GetData() :
