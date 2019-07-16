@@ -12,7 +12,7 @@ class ScrabbleProtocol(basic.NetstringReceiver):
         self.app = app
 
     def connectionMade(self):
-        m = msg.msg("joueur", (PROTOCOL, self.app.email), self.app.nick)
+        m = msg.msg("joueur", (PROTOCOL, ""), self.app.nick)
         self.envoi(m)
 
     def stringReceived(self, mm):
