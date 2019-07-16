@@ -36,12 +36,19 @@ class App(wx.App):
         self.son = son.son()
         self.tour_on = False
         self.t1 = wx.Timer(self)
-        # Appelle la frame de connexion au début
-        self.d = dlgconn.dlgconnframe(self.frame, self)
-        self.d.Show()
-        self.d.MakeModal(True)
         self.reliquat = reliquat.reliquat()
         self.onExit = False
+        # Appelle la frame de connexion au début
+        d = dlgconn.dlgconnframe(self)
+        d.ShowModal()
+        # d.MakeModal(True)
+        if d.nick is None:
+            self.exit()
+        else:
+            self.nick = d.nick
+            self.host = d.host
+            self.port = d.port
+            self.lance_net()
         return True
 
     def lance_net(self) :
@@ -117,7 +124,7 @@ class App(wx.App):
         elif nick == "" :
             self.info_serv(txt, wx.BLUE)
         else :
-            self.info_serv("[%s] %s" % (nick, txt), wx.NamedColour("DARK GREEN"))
+            self.info_serv("[%s] %s" % (nick, txt), wx.Colour("DARK GREEN"))
 
     def traite_tirage(self, m) :
         self.score.Show(False)
@@ -154,8 +161,8 @@ class App(wx.App):
 
     def traite_new(self, m) :
         f = self.frame
-        self.info_serv("="*20, wx.NamedColour("DARK GREEN"))
-        self.info_serv("Nouvelle partie", wx.NamedColour("DARK GREEN"))
+        self.info_serv("="*20, wx.Colour("DARK GREEN"))
+        self.info_serv("Nouvelle partie", wx.Colour("DARK GREEN"))
         self.score.Show(False)
         f.grille.vide_grille()
         reactor.callLater(0.2, self.envoi_msg, "askinfo")
@@ -218,7 +225,7 @@ class App(wx.App):
         utils.errordlg(m.param,"Erreur")
 
     def traite_serverok(self, m) :
-        self.info_serv("Serveur OK", wx.NamedColour("DARK GREEN"))
+        self.info_serv("Serveur OK", wx.Colour("DARK GREEN"))
         self.frame.SetTitle(App.title + ' - ' + self.nick)
 
     def traite_connect(self, m) :
@@ -227,9 +234,9 @@ class App(wx.App):
             utils.errordlg(m.param[1],"Erreur : nom existant")
             f.Close()
         elif m.param[0] == 1 :
-            self.info_serv("Connexion établie", wx.NamedColour("DARK GREEN"))
+            self.info_serv("Connexion établie", wx.Colour("DARK GREEN"))
         elif m.param[0] == 2 :
-            self.info_serv("Reconnexion établie", wx.NamedColour("DARK GREEN"))
+            self.info_serv("Reconnexion établie", wx.Colour("DARK GREEN"))
         self.settings.write()
         self.connected = True
         reactor.callLater(0.1, self.envoi_msg, "askall")

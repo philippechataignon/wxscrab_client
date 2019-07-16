@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 #Reglage encoding
 import wx
+import wx.adv
 class son :
     def __init__(self) :
         self.sons = {
-            'debut':wx.Sound("sound/debut.wav"),
-            'fin_tour':  wx.Sound("sound/fin_tour.wav"),
-            'valid':wx.Sound("sound/valid.wav")
+            'debut':wx.adv.Sound("sound/debut.wav"),
+            'fin_tour':  wx.adv.Sound("sound/fin_tour.wav"),
+            'valid':wx.adv.Sound("sound/valid.wav")
         }
 
     def play_debut(self, m) :
@@ -20,3 +21,6 @@ class son :
     def play_fin_tour(self, m) :
         self.sons['fin_tour'].Play()
         return m
+
+if __name__ == '__main__':
+    s = son()

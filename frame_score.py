@@ -4,9 +4,9 @@ import wx.grid
 import xml.etree.ElementTree as ET
 from xml.parsers.expat import ExpatError
 
-class CustomDataTable(wx.grid.PyGridTableBase):
+class CustomDataTable(wx.grid.GridTableBase):
     def __init__(self, tree):
-        wx.grid.PyGridTableBase.__init__(self)
+        wx.grid.GridTableBase.__init__(self)
         self.colLabels = []
         self.rowLabels = []
         self.data = []
@@ -81,7 +81,7 @@ class ScoreGrid(wx.grid.Grid):
         self.col_tri = 0
         self.rev = True
         self.tri(1)
-    
+
     def OnClick(self,e) :
         c = e.GetCol()+1
         self.tri(c)
@@ -95,7 +95,7 @@ class ScoreGrid(wx.grid.Grid):
             self.rev = True
         self.table.sort(self.col_tri, self.rev)
         self.Refresh()
-            
+
 class frame_score(wx.Frame):
     def __init__(self, parent, data = None) :
         wx.Frame.__init__(self, parent, -1, "wxScrab scores", style=wx.CLOSE_BOX|wx.SYSTEM_MENU|wx.CAPTION)
@@ -119,7 +119,7 @@ class frame_score(wx.Frame):
         panel.SetSizerAndFit(border)
         self.SetSize(self.GetBestSize())
         self.Centre()
- 
+
     def quit(self,evt) :
         self.Hide()
 
@@ -135,7 +135,7 @@ if __name__ == '__main__' :
             <ligne><nom>Kikoolol</nom><val>210</val><val type="f">23</val></ligne>
             <ligne><nom>Bibilolo</nom><val>430</val><val>30</val></ligne></score>
             """
-            self.score = frame_score(None, t) 
+            self.score = frame_score(None, t)
             self.score.Show()
             return True
     app = App()

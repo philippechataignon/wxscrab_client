@@ -50,17 +50,17 @@ class frame(wx.Frame):
         #Creation des items dans la box messages
         msgs_sizer = self.cree_box_sizer("Messages")
         self.msgs = wx.TextCtrl(self.panel, -1, "", size=(app.settings["size_chat_size"], -1), style=wx.TE_MULTILINE|wx.TE_READONLY|wx.TE_RICH)
-        self.set_police_msgs(s["size_font_msgs"])
+        # self.set_police_msgs(s["size_font_msgs"])
         msgs_sizer.Add(self.msgs, 1, wx.ALL|wx.EXPAND, fill)
 
         #Creation box proposition
         props_sizer = self.cree_box_sizer("Propositions", flag = wx.HORIZONTAL)
-        self.props = wx.ComboBox(self.panel, -1, style=wx.CB_READONLY) 
-        props_sizer.Add(self.props, 1, wx.ALL, fill) 
+        self.props = wx.ComboBox(self.panel, -1, style=wx.CB_READONLY)
+        props_sizer.Add(self.props, 1, wx.ALL, fill)
         self.buttonpose = wx.Button(self.panel, -1, "Poser", size=app.settings["size_button"])
         self.buttonpose.Enable(False)
         self.buttonpose.SetDefault() # important pour Windows pour capter la touche Entrée
-        props_sizer.Add(self.buttonpose, 0, wx.ALL|wx.ALIGN_RIGHT, fill) 
+        props_sizer.Add(self.buttonpose, 0, wx.ALL|wx.ALIGN_RIGHT, fill)
         self.props.Bind(wx.EVT_COMBOBOX, self.props_click, self.props)
         self.buttonpose.Bind(wx.EVT_BUTTON, self.pose, self.buttonpose)
         self.buttonpose.Bind(wx.EVT_KEY_DOWN, self.app.OnKey)
@@ -70,9 +70,9 @@ class frame(wx.Frame):
         self.score = wx.StaticText(self.panel, -1, "")
         font = wx.Font(s["size_font_score"], wx.SWISS, wx.NORMAL, wx.NORMAL)
         self.score.SetFont(font)
-        score_sizer.Add(self.score, 1, wx.ALL, fill) 
+        score_sizer.Add(self.score, 1, wx.ALL, fill)
         buttscore = wx.Button(self.panel, -1, "Scores", size=app.settings["size_button"])
-        score_sizer.Add(buttscore, 0, wx.ALL|wx.ALIGN_RIGHT, fill) 
+        score_sizer.Add(buttscore, 0, wx.ALL|wx.ALIGN_RIGHT, fill)
         buttscore.Bind(wx.EVT_BUTTON, self.show_score, buttscore)
 
         #Creation du chat
@@ -81,10 +81,10 @@ class frame(wx.Frame):
         chat_sizer.Add(self.txtchatin,1, wx.ALL, fill)
         self.txtchatin.Bind(wx.EVT_TEXT_ENTER, self.chat_enter, self.txtchatin)
 
-        # cadres boutons 
+        # cadres boutons
         bouton_sizer = self.cree_box_sizer("Commandes", flag = wx.HORIZONTAL)
         #box = wx.StaticBox(self.panel, label = "Commandes")
-        boutons = [ 
+        boutons = [
                     ("Restart", self.button_restart),
                     ("Alpha", self.button_alpha),
                     ("Random", self.button_random),
@@ -118,7 +118,7 @@ class frame(wx.Frame):
             self.set_police_msgs(pset)
 
             menu2 = wx.Menu()
-            menu2.AppendMenu(299,"Taille police", menupol)
+            menu2.Append(299,"Taille police", menupol)
             menubar.Append(menu2,"Options")
 
             menu3 = wx.Menu()
@@ -147,7 +147,7 @@ class frame(wx.Frame):
         sizer2.Add(chat_sizer,   0, wx.EXPAND)
         sizer2.Add( (fill,fill), 0)
 
-        sizer = wx.GridBagSizer(hgap=fill, vgap=fill) 
+        sizer = wx.GridBagSizer(hgap=fill, vgap=fill)
 
         if  s["view_layout"] == "alt" :
             sizer1.Add(tirage_sizer, 1, flag = wx.EXPAND)
@@ -156,7 +156,7 @@ class frame(wx.Frame):
             sizer.Add(grille_sizer, pos=(0,0))
             sizer2.Add(sizer1, flag = wx.EXPAND)
             sizer.Add(sizer2, pos=(0,1),  flag = wx.EXPAND)
-            sizer.AddGrowableCol(1) 
+            sizer.AddGrowableCol(1)
         else :
             sizer1.Add(timer_sizer, flag = wx.EXPAND)
             sizer1.Add((fill,fill))
@@ -166,7 +166,7 @@ class frame(wx.Frame):
             sizer.Add(sizer2, pos=(0,1), span=(2,1), flag = wx.EXPAND)
             sizer.AddGrowableCol(1)
 
-        self.panel.SetSizer(sizer) 
+        self.panel.SetSizer(sizer)
         sizer.Fit(self)
 
 # Utilitaires
@@ -221,7 +221,7 @@ class frame(wx.Frame):
 
     def pose(self, e) :
         p = self.props.GetSelection()
-        if p < 0 : 
+        if p < 0 :
             self.app.envoi_mot()
         else :
             coo, mot = self.props.GetClientData(p)
@@ -257,8 +257,9 @@ class frame(wx.Frame):
 # Fonctions accés
 
     def set_police_msgs(self, i) :
-        self.msgs.SetStyle(0, self.msgs.GetLastPosition(), wx.TextAttr(font=wx.Font(i, wx.SWISS, wx.NORMAL, wx.NORMAL)))
-        self.msgs.SetDefaultStyle(wx.TextAttr(font=wx.Font(i, wx.SWISS, wx.NORMAL, wx.NORMAL)))
+        # self.msgs.SetStyle(0, self.msgs.GetLastPosition(), wx.TextAttr(font=wx.Font(i, wx.SWISS, wx.NORMAL, wx.NORMAL)))
+        # self.msgs.SetDefaultStyle(wx.TextAttr(font=wx.Font(i, wx.SWISS, wx.NORMAL, wx.NORMAL)))
+        pass
 
     def info_serv(self, msg, color = wx.BLACK) :
         self.msgs.SetDefaultStyle(wx.TextAttr(color))
@@ -287,7 +288,7 @@ class frame(wx.Frame):
     def home_props(self) :
         self.props.SetValue('')
         self.props.SetSelection(-1)
-        
+
     def insert_props(self, label, data) :
         pos = self.props.FindString(label)
         if ( pos != wx.NOT_FOUND ) :
