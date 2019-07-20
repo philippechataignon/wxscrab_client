@@ -34,9 +34,9 @@ class CustomDataTable(wx.grid.GridTableBase):
     def sort(self, col, rev) :
         z=zip(self.rowLabels, self.data)
         if col == 0 :
-            z.sort(key=lambda x: x[0], reverse=rev)
+            z = sorted(z, key=lambda x: x[0], reverse=rev)
         else :
-            z.sort(key=lambda x: x[1][col-1], reverse=rev)
+            z = sorted(z, key=lambda x: x[1][col-1], reverse=rev)
         self.rowLabels = [x[0] for x in z]
         self.data = [x[1] for x in z]
 
