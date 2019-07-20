@@ -61,7 +61,7 @@ class grille(wx.Panel) :
     def __iter__(self) :
         """ L'itérateur de la grille parcourt l'ensemble des cases
         """
-        return self.cases.values()
+        return iter(self.cases.values())
 
 ## Fonctions basiques
 
