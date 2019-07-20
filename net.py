@@ -19,8 +19,7 @@ class ScrabbleProtocol(basic.NetstringReceiver):
         if self.app.settings['debug_net'] :
             print( "<- %s" % mm)
         m = msg.msg.load(mm)
-        d = self.app.traite(m.cmd)
-        reactor.callLater(0, d.callback, m)
+        self.app.traite(m.cmd, m)
 
     def envoi(self, mm):
         if self.app.settings['debug_net'] :

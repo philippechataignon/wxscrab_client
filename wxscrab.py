@@ -246,38 +246,36 @@ class App(wx.App):
     def envoi_msg(self, cmd) :
         self.envoi(msg.msg(cmd))
 
-    def traite(self, cmd) :
-        d = defer.Deferred()
+    def traite(self, cmd, m) :
         if cmd == 'serverok' :
-            d.addCallback(self.traite_serverok)
+            self.traite_serverok(m)
         elif cmd == 'connect' :
-            d.addCallback(self.traite_connect)
+            self.traite_connect(m)
         # analyse des commandes si connecté (sauf connect et serverok)
         if self.connected :
             if cmd == 'info' :
-                d.addCallback(self.traite_info)
+                self.traite_info(m)
             elif cmd == 'tirage' :
-                d.addCallback(self.son.play_debut)
-                d.addCallback(self.traite_tirage)
-                d.addCallback(self.traite_tirage_grille)
+                # self.son.play_debut(m)
+                self.traite_tirage(m)
+                self.traite_tirage_grille(m)
             elif cmd == 'chrono' :
-                d.addCallback(self.traite_chrono)
+                self.traite_chrono(m)
             elif cmd == 'error' :
-                d.addCallback(self.traite_error)
+                self.traite_error(m)
             elif cmd == 'mot_top' :
-                d.addCallback(self.son.play_fin_tour)
-                d.addCallback(self.traite_mot_top)
+                # self.son.play_fin_tour(m)
+                self.traite_mot_top(m)
             elif cmd == 'new' :
-                d.addCallback(self.traite_new)
+                self.traite_new(m)
             elif cmd == 'score' :
-                d.addCallback(self.traite_score)
+                self.traite_score(m)
             elif cmd == 'valid' :
-                d.addCallback(self.son.play_valid)
-                d.addCallback(self.traite_valid)
+                # self.son.play_valid(m)
+                self.traite_valid(m)
             elif cmd == 'infojoueur' :
-                d.addCallback(self.traite_infojoueur)
+                self.traite_infojoueur(m)
             elif cmd == "okvote" :
-                d.addCallback(self.traite_okvote)
+                self.traite_okvote(m)
             elif cmd == "all" :
-                d.addCallback(self.traite_all)
-        return d
+                self.traite_all(m)
