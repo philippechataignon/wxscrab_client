@@ -11,15 +11,15 @@ class son :
         }
 
     def play_debut(self, m) :
-        self.sons['debut'].Play()
+        self.sons['debut'].Play(wx.adv.SOUND_ASYNC)
         return m
 
     def play_valid(self, m) :
-        self.sons['valid'].Play()
+        self.sons['valid'].Play(wx.adv.SOUND_ASYNC)
         return m
 
     def play_fin_tour(self, m) :
-        self.sons['fin_tour'].Play()
+        self.sons['fin_tour'].Play(wx.adv.SOUND_ASYNC)
         return m
 
 if __name__ == '__main__':
