@@ -18,7 +18,8 @@ ST_NEXT = 3
 
 class frame(wx.Frame):
     def __init__(self, parent, app, title) :
-        wx.Frame.__init__(self, parent, title=title)
+        super().__init__(parent=None, title=title, size=(1000, 800))
+        # wx.Frame.__init__(self, parent, title=title)
         self.app = app
         s = self.app.settings
         self.SetIcon(wx.Icon(app.settings["files_icone"], wx.BITMAP_TYPE_ICO))
@@ -49,7 +50,7 @@ class frame(wx.Frame):
 
         #Creation des items dans la box messages
         msgs_sizer = self.cree_box_sizer("Messages")
-        self.msgs = wx.TextCtrl(self.panel, -1, "", size=(app.settings["size_chat_size"], -1), style=wx.TE_MULTILINE|wx.TE_READONLY|wx.TE_RICH)
+        self.msgs = wx.TextCtrl(self.panel, -1, "", size=(app.settings["size_chat_size"], -1), style=wx.TE_MULTILINE|wx.TE_READONLY)
         # self.set_police_msgs(s["size_font_msgs"])
         msgs_sizer.Add(self.msgs, 1, wx.ALL|wx.EXPAND, fill)
 
@@ -264,7 +265,7 @@ class frame(wx.Frame):
     def info_serv(self, msg, color = wx.BLACK) :
         self.msgs.SetDefaultStyle(wx.TextAttr(color))
         self.msgs.AppendText("%s\n" % msg)
-        self.msgs.ScrollLines(-1)
+        self.msgs.ScrollLines(1)
 
     def efface_msgs(self) :
         self.msgs.SetValue('')
@@ -298,3 +299,19 @@ class frame(wx.Frame):
         if self.props.GetCount() > self.max_props :
             self.props.Delete(self.max_props)
         self.home_props()
+
+if __name__ == '__main__' :
+    class App(wx.App):
+        def OnInit(self) :
+            import settings
+            self.settings = settings.settings()
+            self.fra = frame(None, self, "title")
+            self.fra.Show()
+            return True
+        def exit(self, evt=None) :
+            pass
+        def OnKey(self, evt=None) :
+            pass
+    app = App()
+    app.MainLoop()
+
