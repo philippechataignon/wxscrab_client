@@ -27,7 +27,7 @@ class frame(wx.Frame):
         self.max_props = app.settings["max_props"]
         self.tour = 0
         fill = s["size_fill"]
-        self.Bind(wx.EVT_CLOSE, self.app.exit)
+        self.Bind(wx.EVT_CLOSE, self.exit)
 
         #Creation et dessin du timer
         timer_sizer  = self.cree_box_sizer("Temps")
@@ -254,6 +254,9 @@ class frame(wx.Frame):
             license = f.read()
         info.License = license
         wx.AboutBox(info)
+
+    def exit(self, e):
+        self.app.exit()
 
 # Fonctions accés
 

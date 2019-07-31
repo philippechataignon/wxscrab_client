@@ -41,14 +41,12 @@ class App(wx.App):
         # Appelle la frame de connexion au début
         d = dlgconn.dlgconnframe(self)
         d.ShowModal()
-        # d.MakeModal(True)
-        if d.nick is None:
-            self.exit()
-        else:
-            self.nick = d.nick
-            self.host = d.host
-            self.port = d.port
-            self.lance_net()
+        if not d.nick:
+            return False
+        self.nick = d.nick
+        self.host = d.host
+        self.port = d.port
+        self.lance_net()
         return True
 
     def lance_net(self) :
@@ -60,6 +58,7 @@ class App(wx.App):
         self.onExit = True
         reactor._stopping = True
         reactor.callFromThread(_threadedselect.ThreadedSelectReactor.stop, reactor)
+        reactor.stop()
 
 ## Gestion des évenements clavier
     def OnKey(self, e) :
