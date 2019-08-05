@@ -54,8 +54,8 @@ class settings :
 
 if __name__ == '__main__' :
     s = settings()
-    sys.stdout.write(yaml.dump(s.dic, default_flow_style=False))
-    print( s.dic)
-    print( s['size_jeton'])
-    print( s['pipo'])
-    print( s.def_keys)
+    # sys.stdout.write(yaml.dump(s.dic, default_flow_style=False))
+    print(s.dic)
+    print(s['size_case'])
+    print(s['pipo'])
+    print(s.def_keys)

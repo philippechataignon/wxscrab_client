@@ -70,6 +70,7 @@ class dlgconnframe(wx.Dialog):
             self.settings["server_port"] = self.port
             self.settings["user_pseudo"] = self.nick
             self.settings.insert_list("server_servers", self.host)
+            self.settings.write()
             self.Destroy()
 
 if __name__ == '__main__' :
