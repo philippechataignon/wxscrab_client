@@ -23,8 +23,7 @@ class settings :
             with open(self.file) as f :
                 buff = f.read()
         dic_perso = yaml.load(buff)
-        for key, item in dic_perso.items() :
-            self.dic[key] = item
+        self.dic.update(dic_perso)
         # assure que la taille de la case est paire
         self.dic['size_case'] = (self.dic['size_case'] // 2) * 2
 
@@ -40,12 +39,12 @@ class settings :
     def __delitem__(self, key):
         del self.dic[key]
 
+    def __repr__(self):
+        return repr(self.dic)
+
     def write(self) :
         with open(self.file,"w") as f :
-            dic = {}
-            for key in self.def_keys :
-                dic[key] = self.dic[key]
-            f.write(yaml.dump(dic, default_flow_style=False))
+            f.write(yaml.dump({k:v for k,v in self.dic.items() if k in self.def_keys}, default_flow_style=False))
 
     def insert_list(self, key, val) :
         if val in self.dic[key] :

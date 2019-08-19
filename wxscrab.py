@@ -236,7 +236,6 @@ class App(wx.App):
             self.info_serv("Connexion établie", wx.Colour("DARK GREEN"))
         elif m.param[0] == 2 :
             self.info_serv("Reconnexion établie", wx.Colour("DARK GREEN"))
-        self.settings.write()
         self.connected = True
         reactor.callLater(0.1, self.envoi_msg, "askall")
         reactor.callLater(0.2, self.envoi_msg, "askinfo")
