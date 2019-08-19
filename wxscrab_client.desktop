@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Scrabble client
+Exec=padsp /home/marie/wxscrab_client/go.py
+Icon=/home/marie/wxscrab_client/images/wxscrab.ico
+Path=/home/marie/wxscrab_client
+Type=Application
+Categories=Game
