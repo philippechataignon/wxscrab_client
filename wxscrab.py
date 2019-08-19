@@ -6,7 +6,7 @@ sys.path.append('../common')
 import wx
 import xml.etree.ElementTree as ET
 
-from twisted.internet import reactor, defer,  _threadedselect
+from twisted.internet import reactor, _threadedselect
 
 import settings
 import frame
