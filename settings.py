@@ -17,12 +17,12 @@ class settings :
 
         with open("def.yaml") as f :
             buff = f.read()
-        self.dic = yaml.load(buff)
+        self.dic = yaml.safe_load(buff)
         self.def_keys = [key for key in self.dic.keys() if not key.startswith(('col_','fontcol_'))]
         if os.path.isfile(self.file) :
             with open(self.file) as f :
                 buff = f.read()
-        dic_perso = yaml.load(buff)
+        dic_perso = yaml.safe_load(buff)
         self.dic.update(dic_perso)
         # assure que la taille de la case est paire
         self.dic['size_case'] = (self.dic['size_case'] // 2) * 2
