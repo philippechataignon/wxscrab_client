@@ -61,7 +61,7 @@ class frame(wx.Frame):
         self.buttonpose = wx.Button(self.panel, -1, "Poser", size=app.settings["size_button"])
         self.buttonpose.Enable(False)
         self.buttonpose.SetDefault() # important pour Windows pour capter la touche Entrée
-        props_sizer.Add(self.buttonpose, 0, wx.ALL|wx.ALIGN_RIGHT, fill)
+        props_sizer.Add(self.buttonpose, 0, wx.ALL, fill)
         self.props.Bind(wx.EVT_COMBOBOX, self.props_click, self.props)
         self.buttonpose.Bind(wx.EVT_BUTTON, self.pose, self.buttonpose)
         self.buttonpose.Bind(wx.EVT_KEY_DOWN, self.app.OnKey)
@@ -73,7 +73,7 @@ class frame(wx.Frame):
         self.score.SetFont(font)
         score_sizer.Add(self.score, 1, wx.ALL, fill)
         buttscore = wx.Button(self.panel, -1, "Scores", size=app.settings["size_button"])
-        score_sizer.Add(buttscore, 0, wx.ALL|wx.ALIGN_RIGHT, fill)
+        score_sizer.Add(buttscore, 0, wx.ALL, fill)
         buttscore.Bind(wx.EVT_BUTTON, self.show_score, buttscore)
 
         #Creation du chat
