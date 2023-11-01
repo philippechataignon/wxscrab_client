@@ -254,23 +254,23 @@ class App(wx.App):
             if cmd == 'info' :
                 self.traite_info(m)
             elif cmd == 'tirage' :
-                self.son.play_debut(m)
                 self.traite_tirage(m)
                 self.traite_tirage_grille(m)
+                self.son.play_debut(m)
             elif cmd == 'chrono' :
                 self.traite_chrono(m)
             elif cmd == 'error' :
                 self.traite_error(m)
             elif cmd == 'mot_top' :
-                self.son.play_fin_tour(m)
                 self.traite_mot_top(m)
+                self.son.play_fin_tour(m)
             elif cmd == 'new' :
                 self.traite_new(m)
             elif cmd == 'score' :
                 self.traite_score(m)
             elif cmd == 'valid' :
-                self.son.play_valid(m)
                 self.traite_valid(m)
+                self.son.play_valid(m)
             elif cmd == 'infojoueur' :
                 self.traite_infojoueur(m)
             elif cmd == "okvote" :

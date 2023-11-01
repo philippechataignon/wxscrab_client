@@ -2,6 +2,13 @@
 #Reglage encoding
 import wx
 import wx.adv
+from multiprocessing import Process
+
+def _play(m):
+   out = open("/dev/dsp", "wb")
+   out.write(m)
+   out.close()
+
 class son :
     def __init__(self) :
         self.sons = {
@@ -10,22 +17,21 @@ class son :
             'valid': self.read_wav("sound/valid.raw")
         }
 
+    def play(self, m):
+        p = Process(target=_play, args=(m,))
+        p.start()
+
     def play_debut(self, m) :
-        self.play_dsp(self.sons['debut'])
+        self.play(self.sons['debut'])
         return m
 
     def play_valid(self, m) :
-        self.play_dsp(self.sons['valid'])
+        self.play(self.sons['valid'])
         return m
 
     def play_fin_tour(self, m) :
-        self.play_dsp(self.sons['fin_tour'])
+        self.play(self.sons['fin_tour'])
         return m
-
-    def play_dsp(self, data):
-        out = open("/dev/dsp", "wb")
-        out.write(data)
-        out.close()
 
     def read_wav(self, name):
         f = open(name, "rb")
