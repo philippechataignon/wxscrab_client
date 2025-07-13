@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from twisted.internet import wxreactor
+
 wxreactor.install()
 from twisted.internet import reactor
 import wx
