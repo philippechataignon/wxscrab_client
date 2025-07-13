@@ -1,6 +1,15 @@
-def main():
-    print("Hello from wxscrab-client!")
+#!/usr/bin/env python3
 
+from twisted.internet import wxreactor
 
-if __name__ == "__main__":
-    main()
+wxreactor.install()
+from twisted.internet import reactor
+import wx
+import wxscrab
+
+# from twisted.internet.defer import setDebugging
+# setDebugging(True)
+
+app = wxscrab.App()
+reactor.registerWxApp(app)
+reactor.run()
