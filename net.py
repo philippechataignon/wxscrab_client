@@ -7,8 +7,9 @@ import utils
 
 PROTOCOL = 3
 
+
 class ScrabbleProtocol(basic.NetstringReceiver):
-    def __init__(self, app) :
+    def __init__(self, app):
         self.app = app
 
     def connectionMade(self):
@@ -17,16 +18,17 @@ class ScrabbleProtocol(basic.NetstringReceiver):
 
     def stringReceived(self, mm):
         m = msg.msg.load(mm)
-        if self.app.settings['debug_net'] :
-            print( "<- %s" % m)
+        if self.app.settings["debug_net"]:
+            print("<- %s" % m)
         self.app.traite(m.cmd, m)
 
     def envoi(self, mm):
-        if self.app.settings['debug_net'] :
-            print( "-> %s" % mm)
+        if self.app.settings["debug_net"]:
+            print("-> %s" % mm)
         self.sendString(mm.dump())
 
-class ScrabbleFactory(ClientFactory) :
+
+class ScrabbleFactory(ClientFactory):
     def __init__(self, app):
         self.app = app
 
@@ -39,12 +41,14 @@ class ScrabbleFactory(ClientFactory) :
         self.app.exit()
 
     def clientConnectionLost(self, connector, reason):
-        if not self.app.onExit :
-            utils.errordlg("La connexion avec le serveur s'est interrompue", "Connexion perdue")
+        if not self.app.onExit:
+            utils.errordlg(
+                "La connexion avec le serveur s'est interrompue", "Connexion perdue"
+            )
             self.app.exit()
 
-    def envoi(self, mm) :
-        if self.proto is not None :
+    def envoi(self, mm):
+        if self.proto is not None:
             self.proto.envoi(mm)
-        elif self.app.settings['debug_net'] :
-            print( "X Non ENVOI X : %s" % mm)
+        elif self.app.settings["debug_net"]:
+            print("X Non ENVOI X : %s" % mm)

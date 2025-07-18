@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import sys
-sys.path.append('../common')
+
+sys.path.append("../common")
 
 import wx
 import utils
@@ -16,8 +17,9 @@ ST_RELIQ = 1
 ST_RESTART = 2
 ST_NEXT = 3
 
+
 class frame(wx.Frame):
-    def __init__(self, parent, app, title) :
+    def __init__(self, parent, app, title):
         super().__init__(parent=None, title=title, size=(1000, 800))
         # wx.Frame.__init__(self, parent, title=title)
         self.app = app
@@ -29,228 +31,248 @@ class frame(wx.Frame):
         fill = s["size_fill"]
         self.Bind(wx.EVT_CLOSE, self.exit)
 
-        #Creation et dessin du timer
-        timer_sizer  = self.cree_box_sizer("Temps")
+        # Creation et dessin du timer
+        timer_sizer = self.cree_box_sizer("Temps")
         self.timer = wx.StaticText(self.panel, -1, str(utils.convert_time(0)))
         font = wx.Font(s["size_font_chrono"], wx.SWISS, wx.NORMAL, wx.NORMAL)
         self.timer.SetFont(font)
-        timer_sizer.Add(self.timer, 0, wx.ALL|wx.EXPAND, fill)
+        timer_sizer.Add(self.timer, 0, wx.ALL | wx.EXPAND, fill)
 
-        #Creation et dessin du tirage
+        # Creation et dessin du tirage
         self.tirage = tirage.tirage(self.panel, self.app)
         tirage_sizer = self.cree_box_sizer("Tirage")
-        tirage_sizer.Add((fill,0),0)
-        tirage_sizer.Add(self.tirage, 1, wx.ALL|wx.EXPAND, fill)
-        tirage_sizer.Add((fill,0),0)
+        tirage_sizer.Add((fill, 0), 0)
+        tirage_sizer.Add(self.tirage, 1, wx.ALL | wx.EXPAND, fill)
+        tirage_sizer.Add((fill, 0), 0)
 
-        #Creation et dessin de la grille
+        # Creation et dessin de la grille
         self.grille = grille.grille(self.panel, self.app)
         grille_sizer = self.cree_box_sizer("Grille")
-        grille_sizer.Add(self.grille, 0, wx.ALL|wx.EXPAND, 0)
+        grille_sizer.Add(self.grille, 0, wx.ALL | wx.EXPAND, 0)
 
-        #Creation des items dans la box messages
+        # Creation des items dans la box messages
         msgs_sizer = self.cree_box_sizer("Messages")
-        self.msgs = wx.TextCtrl(self.panel, -1, "", size=(app.settings["size_chat_size"], -1), style=wx.TE_MULTILINE|wx.TE_READONLY)
+        self.msgs = wx.TextCtrl(
+            self.panel,
+            -1,
+            "",
+            size=(app.settings["size_chat_size"], -1),
+            style=wx.TE_MULTILINE | wx.TE_READONLY,
+        )
         # self.set_police_msgs(s["size_font_msgs"])
-        msgs_sizer.Add(self.msgs, 1, wx.ALL|wx.EXPAND, fill)
+        msgs_sizer.Add(self.msgs, 1, wx.ALL | wx.EXPAND, fill)
 
-        #Creation box proposition
-        props_sizer = self.cree_box_sizer("Propositions", flag = wx.HORIZONTAL)
+        # Creation box proposition
+        props_sizer = self.cree_box_sizer("Propositions", flag=wx.HORIZONTAL)
         self.props = wx.ComboBox(self.panel, -1, style=wx.CB_READONLY)
         props_sizer.Add(self.props, 1, wx.ALL, fill)
-        self.buttonpose = wx.Button(self.panel, -1, "Poser", size=app.settings["size_button"])
+        self.buttonpose = wx.Button(
+            self.panel, -1, "Poser", size=app.settings["size_button"]
+        )
         self.buttonpose.Enable(False)
-        self.buttonpose.SetDefault() # important pour Windows pour capter la touche Entrée
+        self.buttonpose.SetDefault()  # important pour Windows pour capter la touche Entrée
         props_sizer.Add(self.buttonpose, 0, wx.ALL, fill)
         self.props.Bind(wx.EVT_COMBOBOX, self.props_click, self.props)
         self.buttonpose.Bind(wx.EVT_BUTTON, self.pose, self.buttonpose)
         self.buttonpose.Bind(wx.EVT_KEY_DOWN, self.app.OnKey)
 
-        #Creation box score
-        score_sizer = self.cree_box_sizer("Score", flag = wx.HORIZONTAL)
+        # Creation box score
+        score_sizer = self.cree_box_sizer("Score", flag=wx.HORIZONTAL)
         self.score = wx.StaticText(self.panel, -1, "")
         font = wx.Font(s["size_font_score"], wx.SWISS, wx.NORMAL, wx.NORMAL)
         self.score.SetFont(font)
         score_sizer.Add(self.score, 1, wx.ALL, fill)
-        buttscore = wx.Button(self.panel, -1, "Scores", size=app.settings["size_button"])
+        buttscore = wx.Button(
+            self.panel, -1, "Scores", size=app.settings["size_button"]
+        )
         score_sizer.Add(buttscore, 0, wx.ALL, fill)
         buttscore.Bind(wx.EVT_BUTTON, self.show_score, buttscore)
 
-        #Creation du chat
-        chat_sizer = self.cree_box_sizer("Chat", flag = wx.HORIZONTAL)
+        # Creation du chat
+        chat_sizer = self.cree_box_sizer("Chat", flag=wx.HORIZONTAL)
         self.txtchatin = wx.TextCtrl(self.panel, -1, "", style=wx.TE_PROCESS_ENTER)
-        chat_sizer.Add(self.txtchatin,1, wx.ALL, fill)
+        chat_sizer.Add(self.txtchatin, 1, wx.ALL, fill)
         self.txtchatin.Bind(wx.EVT_TEXT_ENTER, self.chat_enter, self.txtchatin)
 
         # cadres boutons
-        bouton_sizer = self.cree_box_sizer("Commandes", flag = wx.HORIZONTAL)
-        #box = wx.StaticBox(self.panel, label = "Commandes")
+        bouton_sizer = self.cree_box_sizer("Commandes", flag=wx.HORIZONTAL)
+        # box = wx.StaticBox(self.panel, label = "Commandes")
         boutons = [
-                    ("Restart", self.button_restart),
-                    ("Alpha", self.button_alpha),
-                    ("Random", self.button_random),
-                    ("Next", self.button_next),
-                    ("Précédent", self.button_pose_last),
-                ]
-        if s["user_admin"] :
+            ("Restart", self.button_restart),
+            ("Alpha", self.button_alpha),
+            ("Random", self.button_random),
+            ("Next", self.button_next),
+            ("Précédent", self.button_pose_last),
+        ]
+        if s["user_admin"]:
             boutons.insert(3, ("Chrono", self.button_chrono))
         bouton_in_sizer = wx.GridSizer(rows=1, cols=len(boutons), hgap=fill, vgap=fill)
-        for label, handler in boutons :
-            bouton = wx.Button(self.panel, label=label, size=app.settings["size_button"])
-            bouton_in_sizer.Add(bouton, flag = wx.ALIGN_CENTER)
+        for label, handler in boutons:
+            bouton = wx.Button(
+                self.panel, label=label, size=app.settings["size_button"]
+            )
+            bouton_in_sizer.Add(bouton, flag=wx.ALIGN_CENTER)
             bouton.Bind(wx.EVT_BUTTON, handler, bouton)
-        bouton_sizer.Add(bouton_in_sizer, proportion=1, flag = wx.EXPAND)
+        bouton_sizer.Add(bouton_in_sizer, proportion=1, flag=wx.EXPAND)
 
-        #Barre de menu
-        if  s["view_menu"] :
+        # Barre de menu
+        if s["view_menu"]:
             menubar = wx.MenuBar()
 
             menu1 = wx.Menu()
-            menu1.Append(101,"Quitter\tCtrl-Q")
+            menu1.Append(101, "Quitter\tCtrl-Q")
             self.Bind(wx.EVT_MENU, self.app.exit, id=101)
 
-            menubar.Append(menu1,"Fichier")
+            menubar.Append(menu1, "Fichier")
             menupol = wx.Menu()
-            for i in range(8,14) :
-                menupol.Append(200+i,str(i),"Changer la police des messages serveur", wx.ITEM_RADIO)
-                self.Bind(wx.EVT_MENU, self.menu_police, id=200+i)
+            for i in range(8, 14):
+                menupol.Append(
+                    200 + i,
+                    str(i),
+                    "Changer la police des messages serveur",
+                    wx.ITEM_RADIO,
+                )
+                self.Bind(wx.EVT_MENU, self.menu_police, id=200 + i)
             pset = s["size_font_msgs"]
-            menupol.Check(200+pset, True)
+            menupol.Check(200 + pset, True)
             self.set_police_msgs(pset)
 
             menu2 = wx.Menu()
-            menu2.Append(299,"Taille police", menupol)
-            menubar.Append(menu2,"Options")
+            menu2.Append(299, "Taille police", menupol)
+            menubar.Append(menu2, "Options")
 
             menu3 = wx.Menu()
-            menu3.Append(301,"A propos")
-            menubar.Append(menu3,"Aide")
+            menu3.Append(301, "A propos")
+            menubar.Append(menu3, "Aide")
             self.Bind(wx.EVT_MENU, self.about, id=301)
 
             self.SetMenuBar(menubar)
 
-        #Barre de status
-        if  s["view_status"] :
+        # Barre de status
+        if s["view_status"]:
             self.st = self.CreateStatusBar()
             self.st.SetFieldsCount(4)
-            self.st.SetStatusWidths(s['size_status'])
+            self.st.SetStatusWidths(s["size_status"])
             self.set_status_next(0)
             self.set_status_restart(0)
 
-        #Sizers
+        # Sizers
         sizer1 = wx.BoxSizer(wx.HORIZONTAL)
 
         sizer2 = wx.BoxSizer(wx.VERTICAL)
-        sizer2.Add(msgs_sizer,   1, wx.EXPAND)
-        sizer2.Add(props_sizer,  0, wx.EXPAND)
-        sizer2.Add(score_sizer,  0, wx.EXPAND)
+        sizer2.Add(msgs_sizer, 1, wx.EXPAND)
+        sizer2.Add(props_sizer, 0, wx.EXPAND)
+        sizer2.Add(score_sizer, 0, wx.EXPAND)
         sizer2.Add(bouton_sizer, 0, wx.EXPAND)
-        sizer2.Add(chat_sizer,   0, wx.EXPAND)
-        sizer2.Add( (fill,fill), 0)
+        sizer2.Add(chat_sizer, 0, wx.EXPAND)
+        sizer2.Add((fill, fill), 0)
 
         sizer = wx.GridBagSizer(hgap=fill, vgap=fill)
 
-        if  s["view_layout"] == "alt" :
-            sizer1.Add(tirage_sizer, 1, flag = wx.EXPAND)
-            sizer1.Add( (fill,fill))
-            sizer1.Add(timer_sizer, flag = wx.EXPAND)
-            sizer.Add(grille_sizer, pos=(0,0))
-            sizer2.Add(sizer1, flag = wx.EXPAND)
-            sizer.Add(sizer2, pos=(0,1),  flag = wx.EXPAND)
+        if s["view_layout"] == "alt":
+            sizer1.Add(tirage_sizer, 1, flag=wx.EXPAND)
+            sizer1.Add((fill, fill))
+            sizer1.Add(timer_sizer, flag=wx.EXPAND)
+            sizer.Add(grille_sizer, pos=(0, 0))
+            sizer2.Add(sizer1, flag=wx.EXPAND)
+            sizer.Add(sizer2, pos=(0, 1), flag=wx.EXPAND)
             sizer.AddGrowableCol(1)
-        else :
-            sizer1.Add(timer_sizer, flag = wx.EXPAND)
-            sizer1.Add((fill,fill))
-            sizer1.Add(tirage_sizer, 1, flag = wx.EXPAND)
-            sizer.Add(sizer1, pos=(0,0), flag = wx.EXPAND)
-            sizer.Add(grille_sizer, pos=(1,0))
-            sizer.Add(sizer2, pos=(0,1), span=(2,1), flag = wx.EXPAND)
+        else:
+            sizer1.Add(timer_sizer, flag=wx.EXPAND)
+            sizer1.Add((fill, fill))
+            sizer1.Add(tirage_sizer, 1, flag=wx.EXPAND)
+            sizer.Add(sizer1, pos=(0, 0), flag=wx.EXPAND)
+            sizer.Add(grille_sizer, pos=(1, 0))
+            sizer.Add(sizer2, pos=(0, 1), span=(2, 1), flag=wx.EXPAND)
             sizer.AddGrowableCol(1)
 
         self.panel.SetSizer(sizer)
         sizer.Fit(self)
 
-# Utilitaires
-    def cree_box_sizer(self, titre, flag = wx.VERTICAL) :
-        box = wx.StaticBox(self.panel, label = titre)
+    # Utilitaires
+    def cree_box_sizer(self, titre, flag=wx.VERTICAL):
+        box = wx.StaticBox(self.panel, label=titre)
         sizer = wx.StaticBoxSizer(box, flag)
         return sizer
 
-# Gestionnaires evenement
-    def button_restart(self, e) :
-        m = msg.msg("vote",["restart"])
+    # Gestionnaires evenement
+    def button_restart(self, e):
+        m = msg.msg("vote", ["restart"])
         self.app.envoi(m)
 
-    def button_next(self, e) :
+    def button_next(self, e):
         m = msg.msg("vote", ["next"])
         self.app.envoi(m)
 
-    def button_chrono(self, e) :
+    def button_chrono(self, e):
         m = msg.msg("vote", ["chrono"])
         self.app.envoi(m)
 
-    def button_alpha(self, e) :
+    def button_alpha(self, e):
         self.tirage.alpha()
 
-    def button_random(self, e) :
+    def button_random(self, e):
         self.tirage.shuffle()
 
-    def chat_enter(self, e) :
-        if self.txtchatin.GetValue() != "" :
+    def chat_enter(self, e):
+        if self.txtchatin.GetValue() != "":
             m = msg.msg("chat", self.txtchatin.GetValue())
             self.app.envoi(m)
             self.txtchatin.SetValue("")
 
-    def props_click(self, e) :
-        if self.app.tour_on :
+    def props_click(self, e):
+        if self.app.tour_on:
             self.grille.reinit_saisie()
             p = self.props.GetSelection()
-            if p == -1 :
+            if p == -1:
                 return
             self.buttonpose.SetFocus()
             coo, mot = self.props.GetClientData(p)
             self.grille.pose_mot(coo, mot, jeton.TEMP)
-        else :
+        else:
             self.home_props()
 
-    def button_pose_last(self, e) :
-        if self.props.Count >= 2 and self.app.tour_on :
+    def button_pose_last(self, e):
+        if self.props.Count >= 2 and self.app.tour_on:
             self.grille.reinit_saisie()
             coo, mot = self.props.GetClientData(1)
-            m = msg.msg("propo",(coo, mot, 0))
+            m = msg.msg("propo", (coo, mot, 0))
             self.app.envoi(m)
 
-    def pose(self, e) :
+    def pose(self, e):
         p = self.props.GetSelection()
-        if p < 0 :
+        if p < 0:
             self.app.envoi_mot()
-        else :
+        else:
             coo, mot = self.props.GetClientData(p)
-            m = msg.msg("propo",(coo, mot, 0))
+            m = msg.msg("propo", (coo, mot, 0))
             self.app.envoi(m)
             self.grille.reinit_saisie()
             self.home_props()
 
-    def show_score(self, e) :
+    def show_score(self, e):
         self.app.score.Show(not self.app.score.IsShown())
 
-## Evts Menu
+    ## Evts Menu
 
-    def menu_police(self, e) :
-        i = e.GetId()-200
+    def menu_police(self, e):
+        i = e.GetId() - 200
         self.app.settings["size_font_msgs"] = i
         self.app.settings.write()
         self.set_police_msgs(i)
 
     def about(self, e):
         info = wx.AboutDialogInfo()
-        with open("tag.file") as f :
-            l = [ x.split(' ')[0] for x in f]
+        with open("tag.file") as f:
+            l = [x.split(" ")[0] for x in f]
         info.Name = "wxScrab"
-        info.Description = "Client Scrabble(r) Duplicate\nRevision: %s\nDate : %s" % (l[0], l[1])
+        info.Description = "Client Scrabble(r) Duplicate\nRevision: %s\nDate : %s" % (
+            l[0],
+            l[1],
+        )
         info.WebSite = ("http://wxscrab.ath.cx", "Site wxScrab")
-        info.Developers = ["PhC", 'xouillet']
-        with open('GPL.txt') as f :
+        info.Developers = ["PhC", "xouillet"]
+        with open("GPL.txt") as f:
             license = f.read()
         info.License = license
         wx.AboutBox(info)
@@ -258,63 +280,68 @@ class frame(wx.Frame):
     def exit(self, e):
         self.app.exit()
 
-# Fonctions accés
+    # Fonctions accés
 
-    def set_police_msgs(self, i) :
+    def set_police_msgs(self, i):
         # self.msgs.SetStyle(0, self.msgs.GetLastPosition(), wx.TextAttr(font=wx.Font(i, wx.SWISS, wx.NORMAL, wx.NORMAL)))
         # self.msgs.SetDefaultStyle(wx.TextAttr(font=wx.Font(i, wx.SWISS, wx.NORMAL, wx.NORMAL)))
         pass
 
-    def info_serv(self, msg, color = wx.BLACK) :
+    def info_serv(self, msg, color=wx.BLACK):
         self.msgs.SetDefaultStyle(wx.TextAttr(color))
         self.msgs.AppendText("%s\n" % msg)
         self.msgs.ScrollLines(1)
 
-    def efface_msgs(self) :
-        self.msgs.SetValue('')
+    def efface_msgs(self):
+        self.msgs.SetValue("")
 
-    def set_status_text(self, text, num) :
-        if self.app.settings["view_status"] :
+    def set_status_text(self, text, num):
+        if self.app.settings["view_status"]:
             self.SetStatusText(text, num)
 
-    def set_status_coo(self, text) :
+    def set_status_coo(self, text):
         self.set_status_text(text, ST_COORD)
 
-    def set_status_next(self, num) :
+    def set_status_next(self, num):
         self.set_status_text("Next : %d" % num, ST_NEXT)
 
-    def set_status_restart(self, num) :
+    def set_status_restart(self, num):
         self.set_status_text("Restart : %d" % num, ST_RESTART)
 
-    def set_status_reliq(self) :
+    def set_status_reliq(self):
         self.set_status_text(str(self.app.reliquat), ST_RELIQ)
 
-    def home_props(self) :
-        self.props.SetValue('')
+    def home_props(self):
+        self.props.SetValue("")
         self.props.SetSelection(-1)
 
-    def insert_props(self, label, data) :
+    def insert_props(self, label, data):
         pos = self.props.FindString(label)
-        if ( pos != wx.NOT_FOUND ) :
+        if pos != wx.NOT_FOUND:
             self.props.Delete(pos)
         self.props.Insert(label, 0, data)
         # Si plus de x props, on vire
-        if self.props.GetCount() > self.max_props :
+        if self.props.GetCount() > self.max_props:
             self.props.Delete(self.max_props)
         self.home_props()
 
-if __name__ == '__main__' :
+
+if __name__ == "__main__":
+
     class App(wx.App):
-        def OnInit(self) :
+        def OnInit(self):
             import settings
+
             self.settings = settings.settings()
             self.fra = frame(None, self, "title")
             self.fra.Show()
             return True
-        def exit(self, evt=None) :
+
+        def exit(self, evt=None):
             pass
-        def OnKey(self, evt=None) :
+
+        def OnKey(self, evt=None):
             pass
+
     app = App()
     app.MainLoop()
-
