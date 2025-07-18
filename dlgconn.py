@@ -10,7 +10,7 @@ class TooMuchTry(Exception):
 
 class dlgconnframe(wx.Dialog):
     def __init__(self, parent=None):
-        super().__init__(parent=None, title="wxScrab Connexion", size=(300, 250))
+        super().__init__(parent=None, title="wxScrab Connexion", size=(400, 300))
         panel = wx.Panel(self)
         icon = wx.Icon("images/wxscrab.ico", wx.BITMAP_TYPE_ICO)
         self.SetIcon(icon)
@@ -23,7 +23,7 @@ class dlgconnframe(wx.Dialog):
         self.txtaddr = wx.ComboBox(
             panel,
             value=self.settings["server_servers"][0],
-            size=(200, -1),
+            size=(250, -1),
             choices=self.settings["server_servers"],
         )
         self.txtaddr.SetFocus()
@@ -38,7 +38,7 @@ class dlgconnframe(wx.Dialog):
             panel, size=(150, -1), value=self.settings["user_pseudo"]
         )
         fgs.Add(self.txtnom, flag=wx.EXPAND)
-        bok = wx.Button(panel, size=(100, 28), label="OK")
+        bok = wx.Button(panel, size=(150, 28), label="OK")
         bok.SetDefault()
         fgs.Add(10, 10)
         fgs.Add(10, 10)
@@ -56,7 +56,7 @@ class dlgconnframe(wx.Dialog):
         self.port = None
         self.Unbind(wx.EVT_CLOSE)
         self.Unbind(wx.EVT_BUTTON)
-        self.Destroy()
+        self.EndModal(wx.CLOSE)
 
     def click_button_ok(self, evt):
         self.nick = self.txtnom.GetValue().strip()
@@ -80,7 +80,7 @@ class dlgconnframe(wx.Dialog):
             self.settings["user_pseudo"] = self.nick
             self.settings.insert_list("server_servers", self.host)
             self.settings.write()
-            self.Destroy()
+            self.EndModal(wx.OK)
 
 
 if __name__ == "__main__":
